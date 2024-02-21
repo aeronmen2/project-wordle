@@ -1,7 +1,7 @@
-import Game from '../Game';
-import Header from '../Header';
+import Game from "../Game"
+import Header from "../Header"
 
-function App() {
+const App = () => {
   return (
     <div className="wrapper">
       <Header />
@@ -10,7 +10,7 @@ function App() {
         <Game />
       </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
