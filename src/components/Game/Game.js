@@ -13,8 +13,6 @@ const Game = () => {
   const [gameStatus, setGameStatus] = useState("playing")
   const [answer, setAnswer] = useState(sample(WORDS))
 
-  console.log("answer", answer)
-
   const handleGuess = useCallback(
     (guess) => {
       const nextGuesses = [...guesses, guess]
