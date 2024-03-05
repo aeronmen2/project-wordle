@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useCallback } from "react"
 
 import { sample } from "../../utils"
 import { WORDS } from "../../data"
@@ -8,26 +8,41 @@ import WonBanner from "./WonBanner"
 import LostBanner from "./LostBanner"
 import { NUM_OF_GUESSES_ALLOWED } from "../../constants"
 
-const answer = sample(WORDS)
-
 const Game = () => {
   const [guesses, setGuesses] = useState([])
   const [gameStatus, setGameStatus] = useState("playing")
+  const [answer, setAnswer] = useState(sample(WORDS))
 
-  const handleGuess = (guess) => {
-    const nextGuesses = [...guesses, guess]
+  console.log("answer", answer)
 
-    setGuesses(nextGuesses)
+  const handleGuess = useCallback(
+    (guess) => {
+      const nextGuesses = [...guesses, guess]
 
-    if (guess.toUpperCase() === answer) {
-      setGameStatus("won")
-    } else if (nextGuesses.length === NUM_OF_GUESSES_ALLOWED) {
-      setGameStatus("lost")
-    }
+      setGuesses(nextGuesses)
+
+      if (guess.toUpperCase() === answer) {
+        setGameStatus("won")
+      } else if (nextGuesses.length === NUM_OF_GUESSES_ALLOWED) {
+        setGameStatus("lost")
+      }
+    },
+    [guesses, answer]
+  )
+
+  const restartGame = () => {
+    setGuesses([])
+    setGameStatus("playing")
+    setAnswer(sample(WORDS))
   }
 
   return (
     <>
+      {gameStatus !== "playing" && (
+        <button className="" onClick={restartGame}>
+          Restart the game
+        </button>
+      )}
       <GuessResult guesses={guesses} answer={answer} />
       <GuessInput handleGuess={handleGuess} gameStatus={gameStatus} />
       {gameStatus === "won" && <WonBanner nbOfGuesses={guesses.length} />}
